@@ -12,6 +12,6 @@
   tags:
     - setup
 - name: run MySQL
-  service: name=mysql state=restarted enabled=yes
+  command: service mysql restart
   tags:
     - setup

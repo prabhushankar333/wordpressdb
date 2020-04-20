@@ -4,6 +4,7 @@
       - python-mysqldb
   tags:
     - configure
+  
 - name: Sets the root password 
   mysql_user: user=root password= "{{ mysql.root_password }}" host=localhost
   tags:
