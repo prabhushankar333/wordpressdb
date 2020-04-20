@@ -1,0 +1,60 @@
+- name: Adds Python MySQL support on ubuntu
+  apt: 
+    pkg:
+      - python-mysqldb
+  tags:
+    - configure
+- name: Sets the root password 
+  mysql_user: user=root password= "{{ mysql.root_password }}" host=localhost
+  tags:
+    - configure
+
+
+- name: Secures the MySQL root user for IPV6 localhost (::1)
+  mysql_user: user= "root" password= "{{ mysql.root_password }}" host= "::1"
+  tags:
+    - configure
+
+- name: Secures the MySQL root user for IPV4 localhost (127.0.0.1)
+  mysql_user: user= "root" password= "{{ mysql.root_password }}" host= "127.0.0.1"
+  tags:
+    - configure
+
+- name: Secures the MySQL root user for localhost domain (localhost)
+  mysql_user: user= "root" password= "{{ mysql.root_password }}" host= "localhost"
+  tags:
+    - configure
+
+- name: Secures the MySQL root user for server_hostname domain
+  mysql_user: user= "root" password= "{{ mysql.root_password }}" host= "{{ mysql.ansible_fqdn }}"
+  tags:
+    - configure
+
+- name: Removes the MySQL test database
+  mysql_db: db=test state=absent
+  tags:
+    - configure
+
+- name: copy sql file
+  copy:
+    src: dump.sql
+    dest: /tmp/dump.sql
+  tags:
+    - configure
+
+- name: copy my.cnf
+  copy:
+    src: my.cnf
+    dest: /root/.my.cnf
+  tags:
+    - configure
+
+- name: Import file.sql similar to mysql -u <username> -p <password> < hostname.sql
+  mysql_db:
+    state: import
+    name: wp_database
+    target: /tmp/dump.sql
+  notify:
+    - restart mysql    
+  tags:
+    - configure

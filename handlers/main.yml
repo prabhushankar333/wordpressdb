@@ -1,0 +1,4 @@
+---
+# handlers file for wpdb
+- name: restart mysql
+  command: service mysql restart

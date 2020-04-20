@@ -1,0 +1,17 @@
+- name: install mysql
+  apt:
+    name: mysql-server
+    state: present
+  tags:
+    - setup
+- name: copy my.cnf
+  template:
+    src: mysqld.cnf.j2
+    dest: /etc/mysql/mysql.conf.d/mysqld.cnf
+    owner: root
+  tags:
+    - setup
+- name: run MySQL
+  service: name=mysql state=restarted enabled=yes
+  tags:
+    - setup

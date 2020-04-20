@@ -1,0 +1,5 @@
+---
+# vars file for wpdb
+mysql:
+  root_password: Prabhu@123
+  ansible_fqdn: mysqldb
